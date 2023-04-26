@@ -92,18 +92,14 @@ def handleBullets(bullet, fanny, alma, isAlmaTurn, mouse_pos):
         Vx = (mouse_pos[0] - (alma.x + alma.width//2))*NORMALIZER_X
         Vy = ((alma.y + alma.height//2) - mouse_pos[1])*NORMALIZER_Y
         angle = math.degrees(math.atan(Vy/Vx))
-        print(Vx,Vy, gravity)
         bullet.x = bullet.x + Vx
         gravity += 1
         bullet.y = bullet.y - Vy + gravity
         if bullet.y > alma.y + alma.height or bullet.y < -100:
             gravity = 0
             bullet.y = WINDOW_HEIGHT + 50
-        if bullet.x < fanny.x:
-            bullet.x += BULLET_SPEED
-   
-        elif bullet.x >= fanny.x:
-            bullet.x = fanny.x + 50 + WINDOW_WIDTH
+        if bullet.x + bullet.width > fanny.x and bullet.x + bullet.width < fanny.width + fanny.x and bullet.y + bullet.height > fanny.y and bullet.y + bullet.height < fanny.y + fanny.height:
+            print("hit")
         
 ##PENDING HOW TO GET RID OF BULLET WHEN COLLIDING
 
