@@ -20,6 +20,9 @@ FANNY_FITTED = pygame.transform.scale(FANNY_IMAGE, (PLAYER_WIDTH, PLAYER_HEIGHT)
 
 DROP_SPEED = 1.5
 BULLET_SPEED = 2
+NORMALIZER_X = 0.02
+NORMALIZER_Y = 0.15
+gravity = 9.81
 #FLOOR_SIZE = [(0,300),(200, 300),(200,500),(0,500)]
 #FLOOR = pygame.draw.polygon(WIN, GREEN,((0,300),(200, 300),(200,500),(0,500)))
 
@@ -71,11 +74,12 @@ def playersIntro(alma, fanny):
         return False
 
 def handleBullets(bullet, fanny, alma, isAlmaTurn, mouse_pos):
+    global gravity
     if isAlmaTurn:
         if bullet == None:
             return None
-        Vx = (fanny.x + fanny.width//2) - mouse_pos[0]
-        Vy = (fanny.y + fanny.height//2) - mouse_pos[1]
+        Vx = ((fanny.x + fanny.width//2) - mouse_pos[0])/NORMALIZER_X
+        Vy = ((fanny.y + fanny.height//2) - mouse_pos[1])/NORMALIZER_Y
         angle = math.degrees(math.atan(Vy/Vx))
         if bullet.x > alma.x + alma.width:
             bullet.x -= BULLET_SPEED
@@ -85,9 +89,16 @@ def handleBullets(bullet, fanny, alma, isAlmaTurn, mouse_pos):
     else:
         if bullet == None:
             return None
-        Vx = mouse_pos[0] - (alma.x + alma.width//2)
-        Vy = (alma.y + alma.height//2) - mouse_pos[1]
+        Vx = (mouse_pos[0] - (alma.x + alma.width//2))*NORMALIZER_X
+        Vy = ((alma.y + alma.height//2) - mouse_pos[1])*NORMALIZER_Y
         angle = math.degrees(math.atan(Vy/Vx))
+        print(Vx,Vy, gravity)
+        bullet.x = bullet.x + Vx
+        gravity += 1
+        bullet.y = bullet.y - Vy + gravity
+        if bullet.y > alma.y + alma.height or bullet.y < -100:
+            gravity = 0
+            bullet.y = WINDOW_HEIGHT + 50
         if bullet.x < fanny.x:
             bullet.x += BULLET_SPEED
    
