@@ -69,21 +69,27 @@ def playersIntro(alma, fanny):
     else:
         return False
 
-def handleBullets(bullet, fanny, alma, isAlmaTurn):
+def handleBullets(bullet, fanny, alma, isAlmaTurn, mouse_pos):
     if isAlmaTurn:
         if bullet == None:
             return None
+        Vx = (fanny.x + fanny.width//2) - mouse_pos[0]
+        Vy = (fanny.y + fanny.height//2) - mouse_pos[1]
+        print("Vxfanny:",Vx,"Vyfanny:",Vy)
         if bullet.x > alma.x + alma.width:
             bullet.x -= BULLET_SPEED
-            print("Fanny",bullet.x)
+
         elif bullet.x <= alma.x + alma.width:
             bullet.x = alma.x + alma.width - 50 - WINDOW_WIDTH
     else:
         if bullet == None:
             return None
+        Vx = mouse_pos[0] - (alma.x + alma.width//2)
+        Vy = (alma.y + alma.height//2) - mouse_pos[1]
+        print("Vx:",Vx,"Vy:",Vy)
         if bullet.x < fanny.x:
             bullet.x += BULLET_SPEED
-            print("Alma",bullet.x)
+   
         elif bullet.x >= fanny.x:
             bullet.x = fanny.x + 50 + WINDOW_WIDTH
         
@@ -98,24 +104,24 @@ def main():
     intro = True
     bullet = None
     isAlmaTurn = True
+    mouse_pos = (0,0)
     while run:
         clock.tick(FPS)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE and not intro and isAlmaTurn:
-                    bullet = pygame.Rect(alma.x + alma.width//2, alma.y + alma.height//2, 5, 5)
-                    isAlmaTurn = False
-                elif event.key == pygame.K_SPACE and not intro and not isAlmaTurn:
-                    bullet = pygame.Rect(fanny.x + fanny.width//2, fanny.y + fanny.height//2, 5, 5)
-                    isAlmaTurn = True
+            if event.type == pygame.MOUSEBUTTONDOWN and not intro and isAlmaTurn:
+                mouse_pos = pygame.mouse.get_pos()
+                bullet = pygame.Rect(alma.x + alma.width//2, alma.y + alma.height//2, 5, 5)
+                isAlmaTurn = False
+            elif event.type == pygame.MOUSEBUTTONDOWN and not intro and not isAlmaTurn:
+                mouse_pos = pygame.mouse.get_pos()
+                bullet = pygame.Rect(fanny.x + fanny.width//2, fanny.y + fanny.height//2, 5, 5)
+                isAlmaTurn = True
 
                     
         if isAlmaTurn and not intro:
-            mousePosition = pygame.mouse.get_pos()
-            pygame.draw.line(WIN, 'Gold',(0,0), (WINDOW_WIDTH, WINDOW_HEIGHT))
-            #pygame.display.update()
+           pass
         elif not isAlmaTurn and not intro:
             pass
 
@@ -124,7 +130,7 @@ def main():
             intro = playersIntro(alma,fanny)
         
         if not intro:
-            handleBullets(bullet, fanny, alma, isAlmaTurn)
+            handleBullets(bullet, fanny, alma, isAlmaTurn, mouse_pos)
             pass
         
         draw_window(alma, fanny, bullet, isAlmaTurn)
