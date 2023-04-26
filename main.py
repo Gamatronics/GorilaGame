@@ -1,4 +1,5 @@
 import pygame
+import math
 
 WINDOW_HEIGHT = 500
 WINDOW_WIDTH = 900
@@ -75,7 +76,7 @@ def handleBullets(bullet, fanny, alma, isAlmaTurn, mouse_pos):
             return None
         Vx = (fanny.x + fanny.width//2) - mouse_pos[0]
         Vy = (fanny.y + fanny.height//2) - mouse_pos[1]
-        print("Vxfanny:",Vx,"Vyfanny:",Vy)
+        angle = math.degrees(math.atan(Vy/Vx))
         if bullet.x > alma.x + alma.width:
             bullet.x -= BULLET_SPEED
 
@@ -86,7 +87,7 @@ def handleBullets(bullet, fanny, alma, isAlmaTurn, mouse_pos):
             return None
         Vx = mouse_pos[0] - (alma.x + alma.width//2)
         Vy = (alma.y + alma.height//2) - mouse_pos[1]
-        print("Vx:",Vx,"Vy:",Vy)
+        angle = math.degrees(math.atan(Vy/Vx))
         if bullet.x < fanny.x:
             bullet.x += BULLET_SPEED
    
