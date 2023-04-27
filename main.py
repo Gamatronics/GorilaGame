@@ -1,5 +1,6 @@
 import pygame
 import math
+pygame.init()
 
 WINDOW_HEIGHT = 500
 WINDOW_WIDTH = 900
@@ -10,7 +11,7 @@ GREEN = (0,255,0)
 BLACK = (0,0,0)
 
 FPS = 60
-
+PUTA_MADRE = pygame.mixer.Sound("audio alma.mp3")
 PLAYER_WIDTH, PLAYER_HEIGHT = 55, 55
 
 ALMA_IMAGE = pygame.image.load('Alma.webp')
@@ -88,7 +89,7 @@ def handleBullets(bullet, fanny, alma, isAlmaTurn, mouse_pos):
             gravity = 0
             bullet.y = WINDOW_HEIGHT + 50
         if bullet.x + bullet.width > alma.x and bullet.x + bullet.width < alma.width + alma.x and bullet.y + bullet.height > alma.y and bullet.y + bullet.height < alma.y + alma.height:
-            pass #Implement what happens after a hit
+            pygame.mixer.Sound.play(PUTA_MADRE)
     else:
         if bullet == None:
             return None
@@ -102,7 +103,7 @@ def handleBullets(bullet, fanny, alma, isAlmaTurn, mouse_pos):
             gravity = 0
             bullet.y = WINDOW_HEIGHT + 50
         if bullet.x + bullet.width > fanny.x and bullet.x + bullet.width < fanny.width + fanny.x and bullet.y + bullet.height > fanny.y and bullet.y + bullet.height < fanny.y + fanny.height:
-            pass #Implement what happens after a hit
+            pygame.mixer.Sound.play(PUTA_MADRE)
         
 ##PENDING HOW TO GET RID OF BULLET WHEN COLLIDING
 
